@@ -1,0 +1,91 @@
+2864	     Tipo de cambio de compra último día del mes	Tipo de cambio de compra último día del mes	Mensual
+3015	                    Construcción	Construcción	Mensual
+3031	                    Resto de Sectores	Resto de Sectores	Mensual
+3132	     Tipo de cambio intervencion del BCCR	Tipo de cambio de intervención del BCCR	Diaria
+3119	          Compra	Compra	Diaria
+3120	          Venta	Venta	Diaria
+3138	     Tipo cambio operaciones Sector Público no bancario	Tipo cambio operaciones Sector Público no bancario	Diaria
+3140	          Venta	Venta	Diaria
+3280	          Compra	Compra	Diaria
+3142	          Tipo de cambio compra anunciado en ventanilla	Tipo de cambio compra anunciado en ventanilla	Diaria
+ 	               Bancos Privados	Bancos Privados	Diaria
+3151	                    Banco BCT	Banco BCT	Diaria
+3152	                    Banco HSBC S.A.	Banco HSBC S.A.	Diaria
+3153	                    Banco Citibank Costa Rica	Banco Citibank Costa Rica	Diaria
+3154	                    Banco CMB	Banco CMB	Diaria
+3180	                    Banco Cathay	Banco Cathay	Diaria
+3181	                    Banco Bac San José	Banco Bac San José	Diaria
+3182	                    Banco Uno	Banco Uno	Diaria
+3183	                    Banco Lafise	Banco Lafise	Diaria
+3184	                    Banco Improsa	Banco Improsa	Diaria
+3185	                    Banco Interfin	Banco Interfin	Diaria
+3186	                    Banco Promerica	Banco Promerica	Diaria
+3187	                    Scotiabank C.R.	Scotiabank C.R.	Diaria
+3566	                    Banco General Costa Rica S.A	Banco General Costa Rica S.A	Diaria
+ 	               Bancos Públicos	Bancos Públicos	Diaria
+3146	                    Banco Crédito Agrícola de Cartago	Banco Crédito Agrícola de Cartago	Diaria
+3148	                    Banco de Costa Rica	Banco de Costa Rica	Diaria
+3149	                    Banco Nacional	Banco Nacional	Diaria
+3179	                    Banco Popular	Banco Popular	Diaria
+ 	               Casas de Cambio	Casas de Cambio	Diaria
+3201	                    Casa Cambio Tele Dólar	Casa Cambio Tele Dólar	Diaria
+3203	                    Casa Cambio Global Exchange	Casa Cambio Global Exchange	Diaria
+3417	                    Casa de cambio Interbolsa	Casa de cambio Interbolsa	Diaria
+3556	                    Casa Cambio Soluciones Monetarias S.A.	Casa Cambio Soluciones Monetarias S.A.	Diaria
+19860	                    Casa de Cambio Latin American Exchange, S.A.	Casa de Cambio Latin American Exchange, S.A.	Diaria
+22964	                    Serviexpreso Money Transfer Casa de Cambio	Serviexpreso Money Transfer Casa de Cambio	Diaria
+ 	               Cooperativas	Cooperativas	Diaria
+3196	                    Cooperativa Credecoop	Cooperativa Credecoop	Diaria
+3197	                    Cooperativa Coocique	Cooperativa Coocique	Diaria
+3198	                    Cooperativa San Marcos	Cooperativa San Marcos	Diaria
+3199	                    Coopemex	Coopemex	Diaria
+3200	                    Coopenae	Coopenae	Diaria
+3289	                    Coopealianza	Coopealianza	Diaria
+3345	                    Coopesanramon R.L.	Coopesanramon R.L.	Diaria
+3361	                    Coopeorotina R.L.	Coopeorotina R.L.	Diaria
+3563	                    Coopeservidores R.L.	Coopeservidores R.L.	Diaria
+3597	                    Coope-Ande N° 1 R.L	Coope-Ande N° 1 R.L	Diaria
+ 	               Financieras	Financieras	Diaria
+3188	                    Financiera Londres	Financiera Londres	Diaria
+3189	                    Financiera Comeca	Financiera Comeca	Diaria
+3190	                    Financiera Multivalores	Financiera Multivalores	Diaria
+3191	                    Bansol	Bansol	Diaria
+3192	                    Financiera Miravalles	Financiera Miravalles	Diaria
+3193	                    Financiera Cafsa	Financiera Cafsa	Diaria
+3341	                    Financiera DESYFIN S.A.	Financiera DESYFIN S.A.	Diaria
+3593	                    Financiera G&T Continental Costa Rica S.A	Financiera G&T Continental Costa Rica S.A	Diaria
+ 	               Mutuales	Mutuales	Diaria
+3194	                    Mutual Alajuela	Mutual Alajuela	Diaria
+3195	                    Mutual Cartago	Mutual Cartago	Diaria
+ 	               Puestos de Bolsa	Puestos de Bolsa	Diaria
+3204	                    Puesto de Bolsa Aldesa Valores	Puesto de Bolsa Aldesa Valores	Diaria
+3281	                    Interbolsa	Interbolsa	Diaria
+3337	                    BN Valores Puesto Bolsa	BN Valores Puesto Bolsa	Diaria
+3427	                    Acobo Puesto de Bolsa S.A.	Acobo Puesto de Bolsa S.A.	Diaria
+3549	                    INS Valores Puesto de Bolsa S.A.	INS Valores Puesto de Bolsa S.A.	Diaria
+3552	                    BCT Valores Puesto de Bolsa S.A.	BCT Valores Puesto de Bolsa S.A.	Diaria
+19728	                    Popular Valores Puesto de Bolsa, Compra	Popular Valores Puesto de Bolsa, Compra	Diaria
+22601	                    BCR Valores Puesto de Bolsa, Compra	BCR Valores Puesto de Bolsa, Compra	Diaria
+22849	                    Mutual Valores Puesto de Bolsa, Compra	Mutual Valores Puesto de Bolsa, Compra	Diaria
+23701	                    PB Inversiones SAMA Compra	PB Inversiones SAMA	Diaria
+ 	          Tipo de cambio venta anunciado en ventanilla	Tipo de cambio venta anunciado en ventanilla	Diaria
+ 	               Bancos Privados	Bancos Privados	Diaria
+3210	                    Banco BCT	Banco BCT	Diaria
+3211	                    Banco HSBC S.A.	Banco HSBC S.A.	Diaria
+3212	                    Banco Citibank Costa Rica	Banco Citibank Costa Rica	Diaria
+3214	                    Banco Cathay	Banco Cathay	Diaria
+3215	                    Banco Bac San José	Banco Bac San José	Diaria
+3217	                    Banco Lafise	Banco Lafise	Diaria
+3218	                    Banco Improsa	Banco Improsa	Diaria
+3220	                    Banco Promerica	Banco Promerica	Diaria
+3221	                    Scotiabank C.R.	Scotiabank C.R.	Diaria
+3568	                    Banco General Costa Rica S.A	Banco General Costa Rica S.A	Diaria
+ 	               Bancos Públicos	Bancos Públicos	Diaria
+3206	                    Banco Crédito Agrícola de Cartago	Banco Crédito Agrícola de Cartago	Diaria
+3207	                    Banco de Costa Rica	Banco de Costa Rica	Diaria
+3208	                    Banco Nacional	Banco Nacional	Diaria
+3209	                    Banco Popular	Banco Popular	Diaria
+ 	               Casas de Cambio	Casas de Cambio	Diaria
+3271	                    Casa Cambio Tele Dólar	Casa Cambio Tele Dólar	Diaria
+3277	                    Casa Cambio Global Exchange	Casa Cambio Global Exchange	Diaria
+19861	                    Casa de Cambio Latin American Exchange, S.A.	Casa de Cambio Latin American Exchange, S.A.	Diaria
