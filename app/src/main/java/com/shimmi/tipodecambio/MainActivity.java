@@ -52,6 +52,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
+    }
+
+    private void requestCurrency(){
         bancos.add(new Banco("BCT",new TipoCambio("3151","3210")));
         bancos.add(new Banco("HSBC",new TipoCambio("3152","3211")));
         bancos.add(new Banco("Citibank",new TipoCambio("3153","3212")));
@@ -79,8 +84,6 @@ public class MainActivity extends AppCompatActivity {
                         // Display the first 500 characters of the response string.
 //                        mTextView.setText("Response is: "+ response.substring(0,500));
                         Log.d("Para que",response);
-
-
 
                         try {
 
@@ -118,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
         });
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
-
     }
 
     @Override
