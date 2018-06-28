@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
                             xr.parse(new InputSource(new StringReader(response)));
 
-                            Log.d("MAMAMIA",myXMLHandler.getBanco().getTipoCambio().getCodigoCompra());
+                            Log.d("MAMAMIA",myXMLHandler.getBanco().getTipoCambio().getVenta()+"");
 
                         } catch (Exception e) {
                             Log.d("ERROR","XML Pasing Excpetion = " + e);

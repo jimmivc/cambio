@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/TipoCambio.iml" filepath="$PROJECT_DIR$/TipoCambio.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/TipoCambio.iml" filepath="$PROJECT_DIR$/.idea/TipoCambio.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
