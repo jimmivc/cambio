@@ -30,6 +30,8 @@ dependencies {
     implementation 'com.android.support:design:24.2.1'
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-auth:16.0.2'
+    implementation 'com.google.firebase:firebase-firestore:17.0.2'
+
     testImplementation 'junit:junit:4.12'
 }
 

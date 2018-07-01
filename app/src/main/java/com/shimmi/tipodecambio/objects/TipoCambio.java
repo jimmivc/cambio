@@ -14,12 +14,11 @@ public class TipoCambio {
     private double compra;
 
     public TipoCambio(){
-
     }
 
     public TipoCambio(String codVenta, String codCompra){
-        this.setCodigoVenta(codVenta);
-        this.setCodigoCompra(codCompra);
+        setCodigoVenta(codVenta);
+        setCodigoCompra(codCompra);
     }
 
     public String getCodigoVenta() {
@@ -50,7 +49,7 @@ public class TipoCambio {
         return venta;
     }
 
-    public void setVenta(double venta) {
+    private void setVenta(double venta) {
         this.venta = venta;
     }
 
@@ -58,7 +57,7 @@ public class TipoCambio {
         return compra;
     }
 
-    public void setCompra(double compra) {
+    private void setCompra(double compra) {
         this.compra = compra;
     }
 

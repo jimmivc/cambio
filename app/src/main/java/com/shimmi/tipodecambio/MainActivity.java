@@ -57,23 +57,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void requestCurrency(){
-        bancos.add(new Banco("BCT",new TipoCambio("3151","3210")));
-        bancos.add(new Banco("HSBC",new TipoCambio("3152","3211")));
-        bancos.add(new Banco("Citibank",new TipoCambio("3153","3212")));
-        bancos.add(new Banco("Cathay",new TipoCambio("3180","3214")));
-        bancos.add(new Banco("Bac",new TipoCambio("3181","3215")));
-        bancos.add(new Banco("Lafise",new TipoCambio("3183","3217")));
-        bancos.add(new Banco("Improsa",new TipoCambio("3184","3218")));
-        bancos.add(new Banco("Interfin",new TipoCambio("3185","3220")));
-        bancos.add(new Banco("Scotiabank",new TipoCambio("3186","3221")));
-        bancos.add(new Banco("General",new TipoCambio("3187","3568")));
-        bancos.add(new Banco("BCR",new TipoCambio("3148","3207")));
-        bancos.add(new Banco("BN",new TipoCambio("3149","3208")));
-        bancos.add(new Banco("Popular",new TipoCambio("4179","3209")));
+//        bancos.add(new Banco("BCT",new TipoCambio("3151","3210")));
+//        bancos.add(new Banco("HSBC",new TipoCambio("3152","3211")));
+//        bancos.add(new Banco("Citibank",new TipoCambio("3153","3212")));
+//        bancos.add(new Banco("Cathay",new TipoCambio("3180","3214")));
+//        bancos.add(new Banco("Bac",new TipoCambio("3181","3215")));
+//        bancos.add(new Banco("Lafise",new TipoCambio("3183","3217")));
+//        bancos.add(new Banco("Improsa",new TipoCambio("3184","3218")));
+//        bancos.add(new Banco("Interfin",new TipoCambio("3185","3220")));
+//        bancos.add(new Banco("Scotiabank",new TipoCambio("3186","3221")));
+//        bancos.add(new Banco("General",new TipoCambio("3187","3568")));
+//        bancos.add(new Banco("BCR",new TipoCambio("3148","3207")));
+//        bancos.add(new Banco("BN",new TipoCambio("3149","3208")));
+//        bancos.add(new Banco("Popular",new TipoCambio("4179","3209")));
 
 
         RequestQueue queue = Volley.newRequestQueue(this);
-
 
         String url = "http://indicadoreseconomicos.bccr.fi.cr/indicadoreseconomicos/WebServices/wsIndicadoresEconomicos.asmx/ObtenerIndicadoresEconomicos?tcIndicador=3151&tcFechaInicio=11/10/2017&tcFechaFinal=11/10/2017&tcNombre=string&tnSubNiveles=S";
 

@@ -1,5 +1,7 @@
 package com.shimmi.tipodecambio.objects;
 
+import java.util.Map;
+
 /**
  * Created by Jimmi on 23/08/2017.
  */
@@ -8,12 +10,10 @@ public class Banco {
     private String nombre;
     private TipoCambio tipoCambio;
 
-    public Banco(String nombre, TipoCambio tipoCambio) {
-        this.nombre = nombre;
-        this.tipoCambio = tipoCambio;
-    }
 
-    public Banco(){}
+    public Banco(String pnombre){
+
+    }
 
     public TipoCambio getTipoCambio() {
         return tipoCambio;
