@@ -3,6 +3,7 @@ package com.shimmi.tipodecambio.xml;
 import android.util.Log;
 
 import com.shimmi.tipodecambio.objects.Banco;
+import com.shimmi.tipodecambio.objects.TipoCambio;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -17,24 +18,33 @@ import java.util.Date;
 
 public class MyXMLHandler extends DefaultHandler {
 
-    public MyXMLHandler(Banco banco){
+//    public MyXMLHandler(Banco banco){
+//        super();
+//        this.banco = banco;
+//    }
+
+    public MyXMLHandler(String venta,String compra){
         super();
-        this.banco = banco;
+        tipoCambio = new TipoCambio();
+        tipoCambio.setCodigoVenta(venta);
+        tipoCambio.setCodigoCompra(compra);
     }
 
     String codigo = null;
     Boolean currentElement = false;
     String currentValue = null;
 
-    private Banco banco;
+//    private Banco banco;
 
-    public Banco getBanco() {
-        return banco;
+    private TipoCambio tipoCambio;
+
+    public TipoCambio getTipoCambio() {
+        return tipoCambio;
     }
 
-    public void setBanco(Banco banco) {
-        this.banco = banco;
-    }
+//    public void setBanco(Banco banco) {
+//        this.banco = banco;
+//    }
 
 
 
@@ -87,10 +97,10 @@ public class MyXMLHandler extends DefaultHandler {
 //                banco.getTipoCambio().setFecha(new Date(currentValue));
         }
         if (localName.equalsIgnoreCase("NUM_VALOR")){
-            if (codigo.equals(banco.getTipoCambio().getCodigoVenta())){
-                banco.getTipoCambio().setVenta(Double.parseDouble(currentValue));
+            if (codigo.equals(tipoCambio.getCodigoVenta())){
+                tipoCambio.setVenta(Double.parseDouble(currentValue));
             }else {
-                banco.getTipoCambio().setCompra(Double.parseDouble(currentValue));
+                tipoCambio.setCompra(Double.parseDouble(currentValue));
             }
         }
 

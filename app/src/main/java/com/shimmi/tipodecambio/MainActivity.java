@@ -1,6 +1,7 @@
 package com.shimmi.tipodecambio;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +25,7 @@ import com.shimmi.tipodecambio.xml.ProgramList;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
+import java.io.Console;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.ArrayList;
@@ -52,7 +54,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Banco b = new Banco("BN",this);
+        bancos.add(b);
 
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                test();
+            }
+        }, 2000);   //5 seconds
+    }
+
+    public void test(){
+        Log.d("TEST",bancos.get(0).getTipoCambio().getCompra()+"");
+        Log.d("TEST",bancos.get(0).getTipoCambio().getVenta()+"");
 
     }
 
@@ -72,54 +87,54 @@ public class MainActivity extends AppCompatActivity {
 //        bancos.add(new Banco("Popular",new TipoCambio("4179","3209")));
 
 
-        RequestQueue queue = Volley.newRequestQueue(this);
-
-        String url = "http://indicadoreseconomicos.bccr.fi.cr/indicadoreseconomicos/WebServices/wsIndicadoresEconomicos.asmx/ObtenerIndicadoresEconomicos?tcIndicador=3151&tcFechaInicio=11/10/2017&tcFechaFinal=11/10/2017&tcNombre=string&tnSubNiveles=S";
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>(){
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-//                        mTextView.setText("Response is: "+ response.substring(0,500));
-                        Log.d("Para que",response);
-
-                        try {
-
-                            //handle XML
-                            SAXParserFactory spf = SAXParserFactory.newInstance();
-                            SAXParser sp = spf.newSAXParser();
-                            XMLReader xr = sp.getXMLReader();
-
-                            //URL to parse XML Tags
-//                            URL sourceUrl = new URL(
-//                                    "http://indicadoreseconomicos.bccr.fi.cr/indicadoreseconomicos/WebServices/wsIndicadoresEconomicos.asmx/ObtenerIndicadoresEconomicos?tcIndicador=3151&tcFechaInicio=11/10/2017&tcFechaFinal=11/10/2017&tcNombre=string&tnSubNiveles=S");
-
-                            //Create handler to handle XML Tags ( extends DefaultHandler )
-                            MyXMLHandler myXMLHandler = new MyXMLHandler(bancos.get(0));
-
-                            /////dddd
-
-                            //////dddd
-                            xr.setContentHandler(myXMLHandler);
-
-                            xr.parse(new InputSource(new StringReader(response)));
-
-                            Log.d("MAMAMIA",myXMLHandler.getBanco().getTipoCambio().getVenta()+"");
-
-                        } catch (Exception e) {
-                            Log.d("ERROR","XML Pasing Excpetion = " + e);
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-//                mTextView.setText("That didn't work!");
-            }
-        });
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//
+//        String url = "http://indicadoreseconomicos.bccr.fi.cr/indicadoreseconomicos/WebServices/wsIndicadoresEconomicos.asmx/ObtenerIndicadoresEconomicos?tcIndicador=3151&tcFechaInicio=11/10/2017&tcFechaFinal=11/10/2017&tcNombre=string&tnSubNiveles=S";
+//
+//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+//                new Response.Listener<String>(){
+//                    @Override
+//                    public void onResponse(String response) {
+//                        // Display the first 500 characters of the response string.
+////                        mTextView.setText("Response is: "+ response.substring(0,500));
+//                        Log.d("Para que",response);
+//
+//                        try {
+//
+//                            //handle XML
+//                            SAXParserFactory spf = SAXParserFactory.newInstance();
+//                            SAXParser sp = spf.newSAXParser();
+//                            XMLReader xr = sp.getXMLReader();
+//
+//                            //URL to parse XML Tags
+////                            URL sourceUrl = new URL(
+////                                    "http://indicadoreseconomicos.bccr.fi.cr/indicadoreseconomicos/WebServices/wsIndicadoresEconomicos.asmx/ObtenerIndicadoresEconomicos?tcIndicador=3151&tcFechaInicio=11/10/2017&tcFechaFinal=11/10/2017&tcNombre=string&tnSubNiveles=S");
+//
+//                            //Create handler to handle XML Tags ( extends DefaultHandler )
+//                            MyXMLHandler myXMLHandler = new MyXMLHandler(bancos.get(0));
+//
+//                            /////dddd
+//
+//                            //////dddd
+//                            xr.setContentHandler(myXMLHandler);
+//
+//                            xr.parse(new InputSource(new StringReader(response)));
+//
+//                            Log.d("MAMAMIA",myXMLHandler.getBanco().getTipoCambio().getVenta()+"");
+//
+//                        } catch (Exception e) {
+//                            Log.d("ERROR","XML Pasing Excpetion = " + e);
+//                        }
+//
+//                    }
+//                }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+////                mTextView.setText("That didn't work!");
+//            }
+//        });
+//        // Add the request to the RequestQueue.
+//        queue.add(stringRequest);
     }
 
     @Override

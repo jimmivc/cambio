@@ -1,5 +1,9 @@
 package com.shimmi.tipodecambio.objects;
 
+import android.content.Context;
+
+import com.shimmi.tipodecambio.utils.Codigos;
+
 import java.util.Map;
 
 /**
@@ -10,9 +14,17 @@ public class Banco {
     private String nombre;
     private TipoCambio tipoCambio;
 
+    public Banco(String pnombre, Context pcontext){
+        setNombre(pnombre);
+        findTipoCambio(pnombre,pcontext);
+    }
 
-    public Banco(String pnombre){
+    private void findTipoCambio(String pnombre, Context pcontext) {
 
+//        setTipoCambio(new TipoCambio());
+        if(tipoCambio==null){
+            setTipoCambio(new TipoCambio(Codigos.getInstance().getCodeByBank(pnombre),pcontext));
+        }
     }
 
     public TipoCambio getTipoCambio() {

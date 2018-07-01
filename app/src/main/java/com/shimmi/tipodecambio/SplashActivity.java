@@ -31,10 +31,10 @@ public class SplashActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
-//        updateUI(currentUser);
+        updateUI(currentUser);
 
-        Map<String,Object> banco = new HashMap<>();
-        banco.put("Nombre","HSBC");
+        Map<String, Object> banco = new HashMap<>();
+        banco.put("Nombre", "HSBC");
         db.collection("banks").document("HSBC").set(banco).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void documentReference) {
@@ -45,20 +45,18 @@ public class SplashActivity extends AppCompatActivity {
             public void onFailure(@Nonnull Exception e) {
                 Log.w("FAIL", "Error adding document", e);
             }
-        });;
+        });
 
 
-//        Handler handler = new Handler();
-//        handler.postDelayed(new Runnable() {
-//            public void run() {
-//                openActivity();
-//            }
-//        }, 2000);   //5 seconds
     }
-
     private void updateUI(FirebaseUser currentUser) {
         if (currentUser!=null){
-            openActivity();
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    openActivity();
+                }
+            }, 2000);   //5 seconds
         }else{
             auth.signInAnonymously();
         }

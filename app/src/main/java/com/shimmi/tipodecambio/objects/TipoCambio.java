@@ -1,14 +1,32 @@
 package com.shimmi.tipodecambio.objects;
 
+import android.content.Context;
+import android.util.Log;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.shimmi.tipodecambio.xml.MyXMLHandler;
+
+import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
+
+import java.io.StringReader;
 import java.util.Date;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 /**
  * Created by Jimmi on 23/08/2017.
  */
 
 public class TipoCambio {
-    private String codigoVenta;
-    private String codigoCompra;
+    public String codigoVenta;
+    public String codigoCompra;
     private Date fecha;
     private double venta;
     private double compra;
@@ -16,9 +34,89 @@ public class TipoCambio {
     public TipoCambio(){
     }
 
-    public TipoCambio(String codVenta, String codCompra){
-        setCodigoVenta(codVenta);
-        setCodigoCompra(codCompra);
+    public TipoCambio(String[] ventacompra, Context pcontext){
+        setCodigoVenta(ventacompra[0]);
+        setCodigoCompra(ventacompra[1]);
+        getDataFromApi(pcontext);
+    }
+
+    private void getDataFromApi(Context pcontext){
+        RequestQueue queue = Volley.newRequestQueue(pcontext);
+
+        String urlCompra = "http://indicadoreseconomicos.bccr.fi.cr/indicadoreseconomicos/WebServices/wsIndicadoresEconomicos.asmx/ObtenerIndicadoresEconomicos?tcIndicador="+codigoCompra+"&tcFechaInicio=30/06/2018&tcFechaFinal=30/06/2018&tcNombre=string&tnSubNiveles=S";
+        String urlVenta = "http://indicadoreseconomicos.bccr.fi.cr/indicadoreseconomicos/WebServices/wsIndicadoresEconomicos.asmx/ObtenerIndicadoresEconomicos?tcIndicador="+codigoVenta+"&tcFechaInicio=30/06/2018&tcFechaFinal=30/06/2018&tcNombre=string&tnSubNiveles=S";
+
+        StringRequest stringRequestCompra = new StringRequest(Request.Method.GET, urlCompra,
+                new Response.Listener<String>(){
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+//                        mTextView.setText("Response is: "+ response.substring(0,500));
+                        Log.d("Para que",response);
+
+                        try {
+                            SAXParserFactory spf = SAXParserFactory.newInstance();
+                            SAXParser sp = spf.newSAXParser();
+                            XMLReader xr = sp.getXMLReader();
+                            MyXMLHandler myXMLHandler = new MyXMLHandler(codigoVenta,codigoCompra);
+                            xr.setContentHandler(myXMLHandler);
+                            xr.parse(new InputSource(new StringReader(response)));
+                            setCompra(myXMLHandler.getTipoCambio().getCompra());
+
+                        } catch (Exception e) {
+                            Log.d("ERROR","XML Pasing Excpetion = " + e);
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                mTextView.setText("That didn't work!");
+            }
+        });
+        // Add the request to the RequestQueue.
+        queue.add(stringRequestCompra);
+
+        StringRequest stringRequestVenta = new StringRequest(Request.Method.GET, urlVenta,
+                new Response.Listener<String>(){
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+//                        mTextView.setText("Response is: "+ response.substring(0,500));
+                        Log.d("Para que",response);
+
+                        try {
+
+                            //handle XML
+                            SAXParserFactory spf = SAXParserFactory.newInstance();
+                            SAXParser sp = spf.newSAXParser();
+                            XMLReader xr = sp.getXMLReader();
+
+                            //URL to parse XML Tags
+//                            URL sourceUrl = new URL(
+//                                    "http://indicadoreseconomicos.bccr.fi.cr/indicadoreseconomicos/WebServices/wsIndicadoresEconomicos.asmx/ObtenerIndicadoresEconomicos?tcIndicador=3151&tcFechaInicio=11/10/2017&tcFechaFinal=11/10/2017&tcNombre=string&tnSubNiveles=S");
+                            //Create handler to handle XML Tags ( extends DefaultHandler )
+                            MyXMLHandler myXMLHandler = new MyXMLHandler(codigoVenta,codigoCompra);
+                            /////dddd
+                            //////dddd
+                            xr.setContentHandler(myXMLHandler);
+                            xr.parse(new InputSource(new StringReader(response)));
+                            setVenta(myXMLHandler.getTipoCambio().getVenta());
+//                            Log.d("MAMAMIA",myXMLHandler.getBanco().getTipoCambio().getVenta()+"");
+                        } catch (Exception e) {
+                            Log.d("ERROR","XML Pasing Excpetion = " + e);
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                mTextView.setText("That didn't work!");
+            }
+        });
+        // Add the request to the RequestQueue.
+        queue.add(stringRequestVenta);
+
     }
 
     public String getCodigoVenta() {
@@ -49,7 +147,7 @@ public class TipoCambio {
         return venta;
     }
 
-    private void setVenta(double venta) {
+    public void setVenta(double venta) {
         this.venta = venta;
     }
 
@@ -57,7 +155,7 @@ public class TipoCambio {
         return compra;
     }
 
-    private void setCompra(double compra) {
+    public void setCompra(double compra) {
         this.compra = compra;
     }
 
