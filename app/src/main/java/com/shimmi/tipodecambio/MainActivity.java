@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -29,6 +30,7 @@ import java.io.Console;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -56,19 +58,23 @@ public class MainActivity extends AppCompatActivity {
 
         Banco b = new Banco("BN",this);
         bancos.add(b);
+        bancos.add(new Banco("Bac",this));
+        bancos.add(new Banco("BCR",this));
 
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                test();
-            }
-        }, 2000);   //5 seconds
+        BankItem adapter = new BankItem(bancos,this.getBaseContext());
+        ((ListView) findViewById(R.id.lstBanks)).setAdapter(adapter);
+
+//        Handler handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//            public void run() {
+//                test();
+//            }
+//        }, 2000);   //5 seconds
     }
 
     public void test(){
         Log.d("TEST",bancos.get(0).getTipoCambio().getCompra()+"");
         Log.d("TEST",bancos.get(0).getTipoCambio().getVenta()+"");
-
     }
 
     private void requestCurrency(){

@@ -9,6 +9,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.shimmi.tipodecambio.xml.MyXMLHandler;
 
 import org.xml.sax.InputSource;
@@ -45,6 +47,8 @@ public class TipoCambio {
 
         String urlCompra = "http://indicadoreseconomicos.bccr.fi.cr/indicadoreseconomicos/WebServices/wsIndicadoresEconomicos.asmx/ObtenerIndicadoresEconomicos?tcIndicador="+codigoCompra+"&tcFechaInicio=30/06/2018&tcFechaFinal=30/06/2018&tcNombre=string&tnSubNiveles=S";
         String urlVenta = "http://indicadoreseconomicos.bccr.fi.cr/indicadoreseconomicos/WebServices/wsIndicadoresEconomicos.asmx/ObtenerIndicadoresEconomicos?tcIndicador="+codigoVenta+"&tcFechaInicio=30/06/2018&tcFechaFinal=30/06/2018&tcNombre=string&tnSubNiveles=S";
+
+        FirebaseFirestore.getInstance();
 
         StringRequest stringRequestCompra = new StringRequest(Request.Method.GET, urlCompra,
                 new Response.Listener<String>(){
