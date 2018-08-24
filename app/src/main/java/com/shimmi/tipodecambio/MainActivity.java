@@ -1,7 +1,6 @@
 package com.shimmi.tipodecambio;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -12,28 +11,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.shimmi.tipodecambio.objects.Banco;
-import com.shimmi.tipodecambio.objects.TipoCambio;
-import com.shimmi.tipodecambio.xml.MyXMLHandler;
-import com.shimmi.tipodecambio.xml.ProgramList;
 
-import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
-
-import java.io.Console;
-import java.io.StringReader;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -58,10 +38,10 @@ public class MainActivity extends AppCompatActivity {
 
         Banco b = new Banco("BN",this);
         bancos.add(b);
-        bancos.add(new Banco("Bac",this));
-        bancos.add(new Banco("BCR",this));
+//        bancos.add(new Banco("Bac",this));
+//        bancos.add(new Banco("BCR",this));
 
-        BankItem adapter = new BankItem(bancos,this.getBaseContext());
+        BankAdapter adapter = new BankAdapter(bancos,this.getBaseContext());
         ((ListView) findViewById(R.id.lstBanks)).setAdapter(adapter);
 
 //        Handler handler = new Handler();

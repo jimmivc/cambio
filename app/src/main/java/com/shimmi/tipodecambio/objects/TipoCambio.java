@@ -50,13 +50,22 @@ public class TipoCambio {
 
         FirebaseFirestore.getInstance();
 
+        queue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+
+            @Override
+            public void onRequestFinished(Request<Object> request) {
+                Log.d("LDMSMDLSMDLMSDLMSLMDM",getCompra()+"");
+                Log.d("LDMSMDLSMDLMSDLMSLMDM",getVenta()+"");
+            }
+        });
+
         StringRequest stringRequestCompra = new StringRequest(Request.Method.GET, urlCompra,
                 new Response.Listener<String>(){
                     @Override
                     public void onResponse(String response) {
                         // Display the first 500 characters of the response string.
 //                        mTextView.setText("Response is: "+ response.substring(0,500));
-                        Log.d("Para que",response);
+//                        Log.d("Para que",response);
 
                         try {
                             SAXParserFactory spf = SAXParserFactory.newInstance();
@@ -87,7 +96,7 @@ public class TipoCambio {
                     public void onResponse(String response) {
                         // Display the first 500 characters of the response string.
 //                        mTextView.setText("Response is: "+ response.substring(0,500));
-                        Log.d("Para que",response);
+//                        Log.d("Para que",response);
 
                         try {
 
@@ -120,6 +129,7 @@ public class TipoCambio {
         });
         // Add the request to the RequestQueue.
         queue.add(stringRequestVenta);
+
 
     }
 

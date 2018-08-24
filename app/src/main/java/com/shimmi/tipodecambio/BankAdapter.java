@@ -12,13 +12,13 @@ import com.shimmi.tipodecambio.objects.Banco;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BankItem extends BaseAdapter {
+public class BankAdapter extends BaseAdapter {
 
     private ArrayList<Banco> banks;
 //    private View view;
     private Context context;
 
-    public BankItem(ArrayList<Banco> pbanks,Context pcontext){
+    public BankAdapter(ArrayList<Banco> pbanks, Context pcontext){
         banks = pbanks;
         context = pcontext;
     }
@@ -42,6 +42,8 @@ public class BankItem extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 //        if (view == null)
 //            view = convertView.inflate(context,R.layout.bank_item,null);
+
+
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.bank_item,null);
         }
