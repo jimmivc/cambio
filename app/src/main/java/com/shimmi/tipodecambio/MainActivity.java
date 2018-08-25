@@ -41,8 +41,8 @@ public class MainActivity extends AppCompatActivity {
 
         Banco b = new Banco("BN",this);
         bancos.add(b);
-//        bancos.add(new Banco("Bac",this));
-//        bancos.add(new Banco("BCR",this));
+        bancos.add(new Banco("Bac",this));
+        bancos.add(new Banco("BCR",this));
 
         BankAdapter adapter = new BankAdapter(bancos,this.getBaseContext());
         ((ListView) findViewById(R.id.lstBanks)).setAdapter(adapter);
@@ -53,11 +53,6 @@ public class MainActivity extends AppCompatActivity {
 //                test();
 //            }
 //        }, 2000);   //5 seconds
-    }
-
-    public void test(){
-        Log.d("TEST",bancos.get(0).getTipoCambio().getCompra()+"");
-        Log.d("TEST",bancos.get(0).getTipoCambio().getVenta()+"");
     }
 
     private void requestCurrency(){
