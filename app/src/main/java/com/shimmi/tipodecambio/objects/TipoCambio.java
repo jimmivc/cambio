@@ -1,8 +1,11 @@
 package com.shimmi.tipodecambio.objects;
 
 import android.content.Context;
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
 import android.util.Log;
 
+import com.android.databinding.library.baseAdapters.BR;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -26,7 +29,7 @@ import javax.xml.parsers.SAXParserFactory;
  * Created by Jimmi on 23/08/2017.
  */
 
-public class TipoCambio {
+public class TipoCambio extends BaseObservable {
     public String codigoVenta;
     public String codigoCompra;
     private Date fecha;
@@ -157,20 +160,25 @@ public class TipoCambio {
         this.fecha = fecha;
     }
 
+    @Bindable
     public double getVenta() {
         return venta;
     }
 
     public void setVenta(double venta) {
         this.venta = venta;
+        notifyPropertyChanged(BR.venta);
     }
 
+    @Bindable
     public double getCompra() {
         return compra;
     }
 
     public void setCompra(double compra) {
         this.compra = compra;
+        notifyPropertyChanged(BR.compra);
+
     }
 
 }

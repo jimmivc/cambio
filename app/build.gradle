@@ -38,6 +38,13 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:16.0.2'
     implementation 'com.google.firebase:firebase-firestore:17.0.2'
 
+    implementation ('android.arch.lifecycle:livedata:1.1.0') {
+        force = true;
+    }
+    implementation ('android.arch.lifecycle:viewmodel:1.1.0') {
+        force = true;
+    }
+
     testImplementation 'junit:junit:4.12'
 }
 

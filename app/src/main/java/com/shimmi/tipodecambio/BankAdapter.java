@@ -1,12 +1,14 @@
 package com.shimmi.tipodecambio;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.shimmi.tipodecambio.databinding.BankItemBinding;
 import com.shimmi.tipodecambio.objects.Banco;
 
 import java.util.ArrayList;
@@ -42,14 +44,18 @@ public class BankAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 //        if (view == null)
 //            view = convertView.inflate(context,R.layout.bank_item,null);
-
+        BankItemBinding binding;
 
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.bank_item,null);
+            binding = DataBindingUtil.bind(convertView);
+            convertView.setTag(binding);
+        }else{
+            binding = (BankItemBinding) convertView.getTag();
         }
+        binding.setBanco(banks.get(position));
+//        ((TextView)convertView.findViewById(R.id.textView)).setText(banks.get(position).getNombre());
 
-        ((TextView)convertView.findViewById(R.id.textView)).setText(banks.get(position).getNombre());
-
-        return convertView;
+        return binding.getRoot();
     }
 }

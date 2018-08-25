@@ -1,7 +1,10 @@
 package com.shimmi.tipodecambio.objects;
 
 import android.content.Context;
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
 
+import com.android.databinding.library.baseAdapters.BR;
 import com.shimmi.tipodecambio.utils.Codigos;
 
 import java.util.Map;
@@ -10,7 +13,7 @@ import java.util.Map;
  * Created by Jimmi on 23/08/2017.
  */
 
-public class Banco {
+public class Banco extends BaseObservable {
     private String nombre;
     private TipoCambio tipoCambio;
 
@@ -35,11 +38,16 @@ public class Banco {
         this.tipoCambio = tipoCambio;
     }
 
+    @Bindable
     public String getNombre() {
         return nombre;
     }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+
+        notifyPropertyChanged(BR.nombre);
+//        notifyPropertyChanged(BR.);
+//        notify();
     }
 }
