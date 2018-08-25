@@ -42,8 +42,6 @@ public class BankAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-//        if (view == null)
-//            view = convertView.inflate(context,R.layout.bank_item,null);
         BankItemBinding binding;
 
         if (convertView == null) {
@@ -54,7 +52,6 @@ public class BankAdapter extends BaseAdapter {
             binding = (BankItemBinding) convertView.getTag();
         }
         binding.setBanco(banks.get(position));
-//        ((TextView)convertView.findViewById(R.id.textView)).setText(banks.get(position).getNombre());
 
         return binding.getRoot();
     }

@@ -41,9 +41,10 @@ public class MainActivity extends AppCompatActivity {
 
         Banco b = new Banco("BN",this);
         bancos.add(b);
-        bancos.add(new Banco("Bac",this));
-        bancos.add(new Banco("BCR",this));
+//        bancos.add(new Banco("Bac",this));
+//        bancos.add(new Banco("BCR",this));
 
+//        requestCurrency();
         BankAdapter adapter = new BankAdapter(bancos,this.getBaseContext());
         ((ListView) findViewById(R.id.lstBanks)).setAdapter(adapter);
 
@@ -56,69 +57,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void requestCurrency(){
-//        bancos.add(new Banco("BCT",new TipoCambio("3151","3210")));
-//        bancos.add(new Banco("HSBC",new TipoCambio("3152","3211")));
-//        bancos.add(new Banco("Citibank",new TipoCambio("3153","3212")));
-//        bancos.add(new Banco("Cathay",new TipoCambio("3180","3214")));
-//        bancos.add(new Banco("Bac",new TipoCambio("3181","3215")));
-//        bancos.add(new Banco("Lafise",new TipoCambio("3183","3217")));
-//        bancos.add(new Banco("Improsa",new TipoCambio("3184","3218")));
-//        bancos.add(new Banco("Interfin",new TipoCambio("3185","3220")));
-//        bancos.add(new Banco("Scotiabank",new TipoCambio("3186","3221")));
-//        bancos.add(new Banco("General",new TipoCambio("3187","3568")));
-//        bancos.add(new Banco("BCR",new TipoCambio("3148","3207")));
-//        bancos.add(new Banco("BN",new TipoCambio("3149","3208")));
-//        bancos.add(new Banco("Popular",new TipoCambio("4179","3209")));
+        bancos.add(new Banco("BCT",this));
+        bancos.add(new Banco("HSBC",this));
+        bancos.add(new Banco("Citibank",this));
+        bancos.add(new Banco("Cathay",this));
+        bancos.add(new Banco("Bac",this));
+        bancos.add(new Banco("Lafise",this));
+        bancos.add(new Banco("Improsa",this));
+//        bancos.add(new Banco("Interfin",this));
+        bancos.add(new Banco("Scotiabank",this));
+        bancos.add(new Banco("General",this));
+        bancos.add(new Banco("BCR",this));
+        bancos.add(new Banco("Popular",this));
 
-
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//
-//        String url = "http://indicadoreseconomicos.bccr.fi.cr/indicadoreseconomicos/WebServices/wsIndicadoresEconomicos.asmx/ObtenerIndicadoresEconomicos?tcIndicador=3151&tcFechaInicio=11/10/2017&tcFechaFinal=11/10/2017&tcNombre=string&tnSubNiveles=S";
-//
-//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-//                new Response.Listener<String>(){
-//                    @Override
-//                    public void onResponse(String response) {
-//                        // Display the first 500 characters of the response string.
-////                        mTextView.setText("Response is: "+ response.substring(0,500));
-//                        Log.d("Para que",response);
-//
-//                        try {
-//
-//                            //handle XML
-//                            SAXParserFactory spf = SAXParserFactory.newInstance();
-//                            SAXParser sp = spf.newSAXParser();
-//                            XMLReader xr = sp.getXMLReader();
-//
-//                            //URL to parse XML Tags
-////                            URL sourceUrl = new URL(
-////                                    "http://indicadoreseconomicos.bccr.fi.cr/indicadoreseconomicos/WebServices/wsIndicadoresEconomicos.asmx/ObtenerIndicadoresEconomicos?tcIndicador=3151&tcFechaInicio=11/10/2017&tcFechaFinal=11/10/2017&tcNombre=string&tnSubNiveles=S");
-//
-//                            //Create handler to handle XML Tags ( extends DefaultHandler )
-//                            MyXMLHandler myXMLHandler = new MyXMLHandler(bancos.get(0));
-//
-//                            /////dddd
-//
-//                            //////dddd
-//                            xr.setContentHandler(myXMLHandler);
-//
-//                            xr.parse(new InputSource(new StringReader(response)));
-//
-//                            Log.d("MAMAMIA",myXMLHandler.getBanco().getTipoCambio().getVenta()+"");
-//
-//                        } catch (Exception e) {
-//                            Log.d("ERROR","XML Pasing Excpetion = " + e);
-//                        }
-//
-//                    }
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-////                mTextView.setText("That didn't work!");
-//            }
-//        });
-//        // Add the request to the RequestQueue.
-//        queue.add(stringRequest);
     }
 
     @Override

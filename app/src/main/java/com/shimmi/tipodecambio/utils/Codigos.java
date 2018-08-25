@@ -22,7 +22,7 @@ public class Codigos {
         codigosBanco.put("Bac",new String[]{"3181","3215"});
         codigosBanco.put("Lafise",new String[]{"3183","3217"});
         codigosBanco.put("Improsa",new String[]{"3184","3218"});
-        codigosBanco.put("Interfin",new String[]{"3185","3220"});
+//        codigosBanco.put("Interfin",new String[]{"3185","3220"});
         codigosBanco.put("Scotiabank",new String[]{"3186","3221"});
         codigosBanco.put("General",new String[]{"3187","3568"});
         codigosBanco.put("BCR",new String[]{"3148","3207"});
