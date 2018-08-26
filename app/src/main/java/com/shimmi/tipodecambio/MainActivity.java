@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 //        bancos.add(new Banco("Bac",this));
 //        bancos.add(new Banco("BCR",this));
 
-//        requestCurrency();
+        requestCurrency();
         BankAdapter adapter = new BankAdapter(bancos,this.getBaseContext());
         ((ListView) findViewById(R.id.lstBanks)).setAdapter(adapter);
 
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private void requestCurrency(){
         bancos.add(new Banco("BCT",this));
         bancos.add(new Banco("HSBC",this));
-        bancos.add(new Banco("Citibank",this));
+//        bancos.add(new Banco("Citibank",this));
         bancos.add(new Banco("Cathay",this));
         bancos.add(new Banco("Bac",this));
         bancos.add(new Banco("Lafise",this));

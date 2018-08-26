@@ -77,7 +77,7 @@ public class TipoCambio extends BaseObservable {
                     public void onResponse(String response) {
                         // Display the first 500 characters of the response string.
 //                        mTextView.setText("Response is: "+ response.substring(0,500));
-//                        Log.d("Para que",response);
+                        Log.d("Para que",response);
 
                         try {
                             SAXParserFactory spf = SAXParserFactory.newInstance();
