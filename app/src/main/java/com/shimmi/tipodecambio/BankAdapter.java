@@ -52,7 +52,7 @@ public class BankAdapter extends BaseAdapter {
             binding = (BankItemBinding) convertView.getTag();
         }
         binding.setBanco(banks.get(position));
-
+        binding.imageView.setImageResource(banks.get(position).getLogo());
         return binding.getRoot();
     }
 }

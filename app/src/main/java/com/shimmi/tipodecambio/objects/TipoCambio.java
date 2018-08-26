@@ -66,8 +66,8 @@ public class TipoCambio extends BaseObservable {
 
             @Override
             public void onRequestFinished(Request<Object> request) {
-                Log.d("LDMSMDLSMDLMSDLMSLMDM",getCompra()+"");
-                Log.d("LDMSMDLSMDLMSDLMSLMDM",getVenta()+"");
+                Log.d(banco+" compra: ",getCompra()+"");
+                Log.d(banco+" venta: ",getVenta()+"");
             }
         });
 
@@ -77,7 +77,7 @@ public class TipoCambio extends BaseObservable {
                     public void onResponse(String response) {
                         // Display the first 500 characters of the response string.
 //                        mTextView.setText("Response is: "+ response.substring(0,500));
-                        Log.d("Para que",response);
+//                        Log.d("Para que",response);
 
                         try {
                             SAXParserFactory spf = SAXParserFactory.newInstance();
