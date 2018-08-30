@@ -27,7 +27,7 @@ public class BankCheckList extends Activity {
         bancos.add(new Banco("General",R.mipmap.general,this));
         bancos.add(new Banco("BCR",R.mipmap.bcr,this));
         bancos.add(new Banco("Popular",R.mipmap.popular,this));
-        BankAdapter adapter = new BankAdapter(bancos,this.getBaseContext());
+        CheckListAdapter adapter = new CheckListAdapter(bancos,this.getBaseContext());
         ((ListView) findViewById(R.id.lstBanks)).setAdapter(adapter);
     }
 }
