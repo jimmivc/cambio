@@ -1,9 +1,11 @@
 package com.shimmi.tipodecambio;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -14,8 +16,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.shimmi.tipodecambio.objects.Banco;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        
+
         Banco b = new Banco("BN",R.mipmap.bn,this);
         bancos.add(b);
 //        bancos.add(new Banco("Bac",this));
@@ -56,6 +63,14 @@ public class MainActivity extends AppCompatActivity {
 //                test();
 //            }
 //        }, 2000);   //5 seconds
+    }
+
+    public ArrayList<String> getArrayList(String key){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        Gson gson = new Gson();
+        String json = prefs.getString(key,null);
+        Type type = new TypeToken<ArrayList<String>>() {}.getType();
+        return gson.fromJson(json, type);
     }
 
     private void requestCurrency(){
