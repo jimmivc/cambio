@@ -40,9 +40,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this,BankCheckList.class));
-//            bancos.get(0).setNombre("OMG");
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                    .setAction("Action", null).show();
             }
         });
 
@@ -50,10 +47,8 @@ public class MainActivity extends AppCompatActivity {
 
         Banco b = new Banco("BN",R.mipmap.bn,this);
         bancos.add(b);
-//        bancos.add(new Banco("Bac",this));
-//        bancos.add(new Banco("BCR",this));
 
-        requestCurrency();
+//        requestCurrency();
         BankAdapter adapter = new BankAdapter(bancos,this.getBaseContext());
         ((ListView) findViewById(R.id.lstBanks)).setAdapter(adapter);
 

@@ -10,6 +10,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.Timestamp;
@@ -24,9 +25,12 @@ import org.xml.sax.XMLReader;
 import java.io.StringReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ConcurrentModificationException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -55,9 +59,40 @@ public class TipoCambio extends BaseObservable {
         getDataFromApi(pcontext);
     }
 
+    public TipoCambio(String[] ventacompra, Context pcontext,String pbanco,boolean async){
+        setCodigoVenta(ventacompra[0]);
+        setCodigoCompra(ventacompra[1]);
+        setFecha(Timestamp.now().toDate());
+        banco = pbanco;
+//        getDataFromApi(pcontext);
+
+        RequestQueue queue = Volley.newRequestQueue(pcontext);
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        String fecha = df.format(getFecha());
+        String urlCompra = "http://indicadoreseconomicos.bccr.fi.cr/indicadoreseconomicos/WebServices/wsIndicadoresEconomicos.asmx/ObtenerIndicadoresEconomicos?tcIndicador="+codigoCompra+"&tcFechaInicio="+fecha+"&tcFechaFinal="+fecha+"&tcNombre=string&tnSubNiveles=S";
+        String urlVenta = "http://indicadoreseconomicos.bccr.fi.cr/indicadoreseconomicos/WebServices/wsIndicadoresEconomicos.asmx/ObtenerIndicadoresEconomicos?tcIndicador="+codigoVenta+"&tcFechaInicio="+fecha+"&tcFechaFinal="+fecha+"&tcNombre=string&tnSubNiveles=S";
+
+        RequestFuture<String> future = RequestFuture.newFuture();
+        StringRequest stringRequestCompra = new StringRequest(Request.Method.GET, urlCompra,future, future);
+//        StringRequest stringRequestVenta = new StringRequest(Request.Method.GET, urlVenta,future,future);
+
+        queue.add(stringRequestCompra);
+//        queue.add(stringRequestVenta);
+
+        try {
+            String resCompra = future.get();
+            System.out.println(resCompra);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     private void getDataFromApi(Context pcontext){
         RequestQueue queue = Volley.newRequestQueue(pcontext);
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
         String fecha = df.format(getFecha());
         String urlCompra = "http://indicadoreseconomicos.bccr.fi.cr/indicadoreseconomicos/WebServices/wsIndicadoresEconomicos.asmx/ObtenerIndicadoresEconomicos?tcIndicador="+codigoCompra+"&tcFechaInicio="+fecha+"&tcFechaFinal="+fecha+"&tcNombre=string&tnSubNiveles=S";
         String urlVenta = "http://indicadoreseconomicos.bccr.fi.cr/indicadoreseconomicos/WebServices/wsIndicadoresEconomicos.asmx/ObtenerIndicadoresEconomicos?tcIndicador="+codigoVenta+"&tcFechaInicio="+fecha+"&tcFechaFinal="+fecha+"&tcNombre=string&tnSubNiveles=S";
@@ -146,11 +181,14 @@ public class TipoCambio extends BaseObservable {
     }
 
     private void saveToDatabase(){
-        if(getVenta()!=0 && getCompra()!=0 ){
-            DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        if(getVenta()!=0 || getCompra()!=0 ){
+            DateFormat df = new SimpleDateFormat("dd-MM-yyyy",Locale.US);
             Map<String, Object> data = new HashMap<>();
-            data.put("compra", getCompra());
-            data.put("venta", getVenta());
+            if(getVenta()!=0)
+                data.put("compra", getCompra());
+            if (getCompra()!=0)
+                data.put("venta", getVenta());
+
 //          FirebaseFirestore.getInstance().collection(banco).document(df.format(now)).set(docData);
             FirebaseDatabase.getInstance().getReference(banco+"/"+df.format(getFecha())).setValue(data);
         }
