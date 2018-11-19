@@ -3,6 +3,7 @@ package com.shimmi.tipodecambio.objects;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.android.databinding.library.baseAdapters.BR;
@@ -15,8 +16,12 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.shimmi.tipodecambio.utils.Codigos;
 import com.shimmi.tipodecambio.xml.MyXMLHandler;
 
 import org.xml.sax.InputSource;
@@ -25,7 +30,7 @@ import org.xml.sax.XMLReader;
 import java.io.StringReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ConcurrentModificationException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -46,6 +51,7 @@ public class TipoCambio extends BaseObservable {
     private double venta;
     private double compra;
     private String banco;
+    private Context context;
 
     public TipoCambio(){
 
@@ -56,42 +62,83 @@ public class TipoCambio extends BaseObservable {
         setCodigoCompra(ventacompra[1]);
         setFecha(Timestamp.now().toDate());
         banco = pbanco;
-        getDataFromApi(pcontext);
+        context = pcontext;
+//        getDataFromApi(pcontext);
+        findTipoCambio();
     }
 
-    public TipoCambio(String[] ventacompra, Context pcontext,String pbanco,boolean async){
-        setCodigoVenta(ventacompra[0]);
-        setCodigoCompra(ventacompra[1]);
-        setFecha(Timestamp.now().toDate());
-        banco = pbanco;
-//        getDataFromApi(pcontext);
+    private void findTipoCambio() {
 
-        RequestQueue queue = Volley.newRequestQueue(pcontext);
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-        String fecha = df.format(getFecha());
-        String urlCompra = "http://indicadoreseconomicos.bccr.fi.cr/indicadoreseconomicos/WebServices/wsIndicadoresEconomicos.asmx/ObtenerIndicadoresEconomicos?tcIndicador="+codigoCompra+"&tcFechaInicio="+fecha+"&tcFechaFinal="+fecha+"&tcNombre=string&tnSubNiveles=S";
-        String urlVenta = "http://indicadoreseconomicos.bccr.fi.cr/indicadoreseconomicos/WebServices/wsIndicadoresEconomicos.asmx/ObtenerIndicadoresEconomicos?tcIndicador="+codigoVenta+"&tcFechaInicio="+fecha+"&tcFechaFinal="+fecha+"&tcNombre=string&tnSubNiveles=S";
+        Date now = Timestamp.now().toDate();
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        FirebaseDatabase.getInstance().getReference(banco+"/"+df.format(now)).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue()!=null){
+                    setCompra(dataSnapshot.hasChild("compra")? dataSnapshot.child("compra").getValue(Double.class):0);
+                    setVenta(dataSnapshot.hasChild("venta")?dataSnapshot.child("venta").getValue(Double.class):0);
+//                    setTipoCambio(dataSnapshot.getValue(TipoCambio.class));
+                    if(getCompra()==0 || getVenta()==0)
+                        getDataFromApi(true);
+                }else{
+                    getDataFromApi(false);
+                }
+            }
 
-        RequestFuture<String> future = RequestFuture.newFuture();
-        StringRequest stringRequestCompra = new StringRequest(Request.Method.GET, urlCompra,future, future);
-//        StringRequest stringRequestVenta = new StringRequest(Request.Method.GET, urlVenta,future,future);
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-        queue.add(stringRequestCompra);
-//        queue.add(stringRequestVenta);
+            }
+        });
+    }
 
-        try {
-            String resCompra = future.get();
-            System.out.println(resCompra);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+    private void tryGetTipoCambio(boolean findCompra){
+
+        if (getCompra()==0 || getCompra()==0) {
+            Date now = Timestamp.now().toDate();
+//            findTipoCambio(now,getCompra()==0,getVenta()==0);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(now);
+            calendar.add(Calendar.DATE,-1);
+            findTipoCambio(calendar.getTime(),findCompra,!findCompra);
         }
     }
 
+    private void findTipoCambio(final Date date, final boolean fCompra, final boolean fVenta) {
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
 
-    private void getDataFromApi(Context pcontext){
-        RequestQueue queue = Volley.newRequestQueue(pcontext);
+        FirebaseDatabase.getInstance().getReference(banco+"/"+df.format(date)).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue()!=null){
+
+                    double compra = dataSnapshot.hasChild("compra")? dataSnapshot.child("compra").getValue(Double.class):0;
+                    double venta = dataSnapshot.hasChild("venta")?dataSnapshot.child("venta").getValue(Double.class):0;
+//                    setTipoCambio(dataSnapshot.getValue(TipoCambio.class));
+                    if (fCompra){
+                        setCompra(compra);
+                    }
+                    if(fVenta){
+                        setVenta(venta);
+                    }
+                }
+
+                if(getCompra()==0 || getVenta()==0){
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(date);
+                    calendar.add(Calendar.DATE,-1);
+                    findTipoCambio(calendar.getTime(),fCompra,fVenta);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+
+    private void getDataFromApi(final boolean secondAttempt){
+        RequestQueue queue = Volley.newRequestQueue(context);
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
         String fecha = df.format(getFecha());
         String urlCompra = "http://indicadoreseconomicos.bccr.fi.cr/indicadoreseconomicos/WebServices/wsIndicadoresEconomicos.asmx/ObtenerIndicadoresEconomicos?tcIndicador="+codigoCompra+"&tcFechaInicio="+fecha+"&tcFechaFinal="+fecha+"&tcNombre=string&tnSubNiveles=S";
@@ -126,7 +173,11 @@ public class TipoCambio extends BaseObservable {
                         } catch (Exception e) {
                             Log.d("ERROR","XML Pasing Excpetion = " + e);
                         }
-                        saveToDatabase();
+                        if(getCompra()==0)
+                            tryGetTipoCambio(true);
+                        else
+                            saveToDatabase();
+
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -167,8 +218,10 @@ public class TipoCambio extends BaseObservable {
                             Log.d("ERROR","XML Pasing Excpetion = " + e);
                         }
 
-                        saveToDatabase();
-                    }
+                        if(getVenta()==0)
+                            tryGetTipoCambio(false);
+                        else
+                            saveToDatabase();                    }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -185,9 +238,9 @@ public class TipoCambio extends BaseObservable {
             DateFormat df = new SimpleDateFormat("dd-MM-yyyy",Locale.US);
             Map<String, Object> data = new HashMap<>();
             if(getVenta()!=0)
-                data.put("compra", getCompra());
+                data.put("compra", getVenta());
             if (getCompra()!=0)
-                data.put("venta", getVenta());
+                data.put("venta", getCompra());
 
 //          FirebaseFirestore.getInstance().collection(banco).document(df.format(now)).set(docData);
             FirebaseDatabase.getInstance().getReference(banco+"/"+df.format(getFecha())).setValue(data);

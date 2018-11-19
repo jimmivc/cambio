@@ -15,7 +15,7 @@ public class Codigos {
         codigosBanco = new HashMap<>();
         //venta,compra
 
-        codigosBanco.put("BN",new String[]{"3208","3151"});
+        codigosBanco.put("BN",new String[]{"3208","3149"});
         codigosBanco.put("BCT",new String[]{"3210","3151"});
         codigosBanco.put("HSBC",new String[]{"3211","3152"});
 //        codigosBanco.put("Citibank",new String[]{"3153","3212"});

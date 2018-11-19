@@ -39,98 +39,16 @@ public class Banco extends BaseObservable {
     public Banco(String pnombre, Context pcontext){
         setNombre(pnombre);
         context = pcontext;
-        tipoCambio = new TipoCambio();
-        findTipoCambio();
+        tipoCambio = new TipoCambio(Codigos.getInstance().getCodeByBank(getNombre()),context,getNombre());
+//        findTipoCambio();
     }
 
     public Banco(String pnombre,int plogo, Context pcontext){
         setNombre(pnombre);
         context = pcontext;
-        tipoCambio = new TipoCambio();
+        tipoCambio = new TipoCambio(Codigos.getInstance().getCodeByBank(getNombre()),context,getNombre());
         setLogo(plogo);
-        findTipoCambio();
-    }
-
-    private void findTipoCambio() {
-
-        Date now = Timestamp.now().toDate();
-        DateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-        FirebaseDatabase.getInstance().getReference(getNombre()+"/"+df.format(now)).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue()!=null){
-                    tipoCambio.setCompra(dataSnapshot.hasChild("compra")? dataSnapshot.child("compra").getValue(Double.class):0);
-                    tipoCambio.setVenta(dataSnapshot.hasChild("venta")?dataSnapshot.child("venta").getValue(Double.class):0);
-//                    setTipoCambio(dataSnapshot.getValue(TipoCambio.class));
-                    if(tipoCambio.getCompra()==0 || tipoCambio.getVenta()==0)
-                        tryGetTipoCambio();
-
-                }else{
-                    createTipoCambio();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void findTipoCambio(final Date date, final boolean fCompra, final boolean fVenta) {
-        DateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-
-        FirebaseDatabase.getInstance().getReference(getNombre()+"/"+df.format(date)).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue()!=null){
-
-                    double compra = dataSnapshot.hasChild("compra")? dataSnapshot.child("compra").getValue(Double.class):0;
-                    double venta = dataSnapshot.hasChild("venta")?dataSnapshot.child("venta").getValue(Double.class):0;
-//                    setTipoCambio(dataSnapshot.getValue(TipoCambio.class));
-                    if (fCompra){
-                        tipoCambio.setCompra(compra);
-                    }
-
-                    if(fVenta){
-                        tipoCambio.setVenta(venta);
-                    }
-
-
-
-                }
-
-                if(tipoCambio.getCompra()==0 || tipoCambio.getVenta()==0){
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(date);
-                    calendar.add(Calendar.DATE,-1);
-                    findTipoCambio(calendar.getTime(),fCompra,fVenta);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void tryGetTipoCambio(){
-        TipoCambio t = new TipoCambio(Codigos.getInstance().getCodeByBank(getNombre()),context,getNombre(),true);
-        if (tipoCambio.getVenta()==0)
-            tipoCambio.setVenta(t.getVenta());
-        if(tipoCambio.getCompra()==0)
-            tipoCambio.setCompra(t.getCompra());
-
-        if (tipoCambio.getCompra()==0 || tipoCambio.getCompra()==0) {
-            Date now = Timestamp.now().toDate();
-            DateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-            findTipoCambio(now,tipoCambio.getCompra()==0,tipoCambio.getVenta()==0);
-        }
-    }
-
-    private void createTipoCambio(){
-        setTipoCambio(new TipoCambio(Codigos.getInstance().getCodeByBank(getNombre()),context,getNombre()));
+//        findTipoCambio();
     }
 
     @Bindable
