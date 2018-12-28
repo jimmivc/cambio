@@ -4,4 +4,6 @@
     <string name="dolar_compra">Compra:</string>
     <string name="dolar_venta">Venta:</string>
     <string name="logo">logo</string>
+    <!--main-->
+    <string name="add_message">Selecciona + para agregar bancos favoritos</string>
 </resources>

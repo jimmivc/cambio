@@ -45,8 +45,9 @@ public class BankCheckList extends Activity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         saveArrayList(bancos);
+        setResult(Activity.RESULT_OK);
+        finish();
     }
 
     public void saveArrayList(ArrayList<Banco> banksList){
@@ -54,8 +55,9 @@ public class BankCheckList extends Activity {
         ArrayList<String> list = new ArrayList<>();
 
         for (Banco b:banksList) {
-            if (b.isState())
+            if (b.isState()) {
                 list.add(b.getNombre());
+            }
         }
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);

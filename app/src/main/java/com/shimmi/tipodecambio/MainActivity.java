@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -39,20 +40,20 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,BankCheckList.class));
+                startActivityForResult(new Intent(MainActivity.this,BankCheckList.class),19);
             }
         });
+        loadBanks();
+    }
 
-//        requestCurrency();
-//        bancos = getArrayList("banks");
-//        loadBanks();
-
-//        Handler handler = new Handler();
-//        handler.postDelayed(new Runnable() {
-//            public void run() {
-//                test();
-//            }
-//        }, 2000);   //5 seconds
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 19){
+            if(resultCode== RESULT_OK){
+                loadBanks();
+            }
+        }
     }
 
     public ArrayList<String> getArrayList(String key){
@@ -68,15 +69,21 @@ public class MainActivity extends AppCompatActivity {
         for (String b:getArrayList("banks")){
             bancos.add(new Banco(b,this));
         }
-        BankAdapter adapter = new BankAdapter(bancos,this.getBaseContext());
-        ((ListView) findViewById(R.id.lstBanks)).setAdapter(adapter);
+        if(bancos.size()!=0) {
+            findViewById(R.id.lstBanks).setVisibility(View.VISIBLE);
+            findViewById(R.id.txtAddMessage).setVisibility(View.GONE);
+            BankAdapter adapter = new BankAdapter(bancos, this.getBaseContext());
+            ((ListView) findViewById(R.id.lstBanks)).setAdapter(adapter);
+        }else{
+            findViewById(R.id.lstBanks).setVisibility(View.GONE);
+            findViewById(R.id.txtAddMessage).setVisibility(View.VISIBLE);
+        }
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
-        loadBanks();
     }
 
     private void requestCurrency(){
