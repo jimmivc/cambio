@@ -43,9 +43,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        requestCurrency();
-        BankAdapter adapter = new BankAdapter(bancos,this.getBaseContext());
-        ((ListView) findViewById(R.id.lstBanks)).setAdapter(adapter);
+//        requestCurrency();
+//        bancos = getArrayList("banks");
+//        loadBanks();
 
 //        Handler handler = new Handler();
 //        handler.postDelayed(new Runnable() {
@@ -58,23 +58,39 @@ public class MainActivity extends AppCompatActivity {
     public ArrayList<String> getArrayList(String key){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         Gson gson = new Gson();
-        String json = prefs.getString(key,null);
+        String json = prefs.getString(key,"[]");
         Type type = new TypeToken<ArrayList<String>>() {}.getType();
         return gson.fromJson(json, type);
     }
 
+    private void loadBanks(){
+        bancos.clear();
+        for (String b:getArrayList("banks")){
+            bancos.add(new Banco(b,this));
+        }
+        BankAdapter adapter = new BankAdapter(bancos,this.getBaseContext());
+        ((ListView) findViewById(R.id.lstBanks)).setAdapter(adapter);
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadBanks();
+    }
+
     private void requestCurrency(){
-        bancos.add(new Banco("BN",R.mipmap.bn,this));
-        bancos.add(new Banco("BCT",R.mipmap.bct,this));
-        bancos.add(new Banco("HSBC",R.mipmap.hsbc,this));
-        bancos.add(new Banco("Cathay",R.mipmap.cathay,this));
-        bancos.add(new Banco("Bac",R.mipmap.bac,this));
-        bancos.add(new Banco("Lafise",R.mipmap.lafise,this));
-        bancos.add(new Banco("Improsa",R.mipmap.improsa,this));
-        bancos.add(new Banco("Scotiabank",R.mipmap.scot,this));
-        bancos.add(new Banco("General",R.mipmap.general,this));
-        bancos.add(new Banco("BCR",R.mipmap.bcr,this));
-        bancos.add(new Banco("Popular",R.mipmap.popular,this));
+        bancos.add(new Banco("BN",this));
+        bancos.add(new Banco("BCT",this));
+        bancos.add(new Banco("HSBC",this));
+        bancos.add(new Banco("Cathay",this));
+        bancos.add(new Banco("Bac",this));
+        bancos.add(new Banco("Lafise",this));
+        bancos.add(new Banco("Improsa",this));
+        bancos.add(new Banco("Scotiabank",this));
+        bancos.add(new Banco("General",this));
+        bancos.add(new Banco("BCR",this));
+        bancos.add(new Banco("Popular",this));
     }
 
     @Override

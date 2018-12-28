@@ -15,6 +15,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class BankCheckList extends Activity {
+    ArrayList<Banco> bancos;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,23 +25,39 @@ public class BankCheckList extends Activity {
 
 //        }
 
-        ArrayList<Banco> bancos = new ArrayList<>();
-        bancos.add(new Banco("BN",R.mipmap.bn,this));
-        bancos.add(new Banco("BCT",R.mipmap.bct,this));
-        bancos.add(new Banco("HSBC",R.mipmap.hsbc,this));
-        bancos.add(new Banco("Cathay",R.mipmap.cathay,this));
-        bancos.add(new Banco("Bac",R.mipmap.bac,this));
-        bancos.add(new Banco("Lafise",R.mipmap.lafise,this));
-        bancos.add(new Banco("Improsa",R.mipmap.improsa,this));
-        bancos.add(new Banco("Scotiabank",R.mipmap.scot,this));
-        bancos.add(new Banco("General",R.mipmap.general,this));
-        bancos.add(new Banco("BCR",R.mipmap.bcr,this));
-        bancos.add(new Banco("Popular",R.mipmap.popular,this));
+        bancos = loadSwitches();
+//        bancos.add(new Banco("BN",true));
+//        bancos.add(new Banco("BCT",false));
+//        bancos.add(new Banco("HSBC", false));
+//        bancos.add(new Banco("Cathay",false));
+//        bancos.add(new Banco("Bac",false));
+//        bancos.add(new Banco("Lafise",false));
+//        bancos.add(new Banco("Improsa",false));
+//        bancos.add(new Banco("Scotiabank",false));
+//        bancos.add(new Banco("General",true));
+//        bancos.add(new Banco("BCR",false));
+//        bancos.add(new Banco("Popular",false));
         CheckListAdapter adapter = new CheckListAdapter(bancos,this.getBaseContext());
         ((ListView) findViewById(R.id.lstBanks)).setAdapter(adapter);
+
+//        banks = getArrayList("banks");
     }
 
-    public void saveArrayList(ArrayList<String> list, String key){
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        saveArrayList(bancos);
+    }
+
+    public void saveArrayList(ArrayList<Banco> banksList){
+        String key = "banks";
+        ArrayList<String> list = new ArrayList<>();
+
+        for (Banco b:banksList) {
+            if (b.isState())
+                list.add(b.getNombre());
+        }
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = prefs.edit();
         Gson gson = new Gson();
@@ -49,10 +66,35 @@ public class BankCheckList extends Activity {
         editor.apply();     // This line is IMPORTANT !!!
     }
 
+    public ArrayList<Banco> loadSwitches() {
+        ArrayList<Banco> bancos = new ArrayList<>();
+        bancos.add(new Banco("BN",false));
+        bancos.add(new Banco("BCT",false));
+        bancos.add(new Banco("HSBC", false));
+        bancos.add(new Banco("Cathay",false));
+        bancos.add(new Banco("Bac",false));
+        bancos.add(new Banco("Lafise",false));
+        bancos.add(new Banco("Improsa",false));
+        bancos.add(new Banco("Scotiabank",false));
+        bancos.add(new Banco("General",false));
+        bancos.add(new Banco("BCR",false));
+        bancos.add(new Banco("Popular",false));
+
+        for (String nombre:getArrayList("banks")) {
+            for (Banco bank:bancos) {
+                if(nombre.equals(bank.getNombre())){
+                    bank.setState(true);
+                    break;
+                }
+            }
+        }
+        return bancos;
+    }
+
     public ArrayList<String> getArrayList(String key){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         Gson gson = new Gson();
-        String json = prefs.getString(key,null);
+        String json = prefs.getString(key,"[]");
         Type type = new TypeToken<ArrayList<String>>() {}.getType();
         return gson.fromJson(json, type);
     }

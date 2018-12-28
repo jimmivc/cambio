@@ -11,6 +11,7 @@ import android.util.Log;
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -66,17 +67,22 @@ public class SplashActivity extends AppCompatActivity {
 //            handler.postDelayed(new Runnable() {
 //                public void run() {
                     openActivity();
-                    finish();
 //                }
 //            }, 2000);   //5 seconds
 
         }else{
-            auth.signInAnonymously();
+            auth.signInAnonymously().addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                @Override
+                public void onSuccess(AuthResult authResult) {
+                    openActivity();
+                }
+            });
         }
     }
 
     private void openActivity(){
         Intent main = new Intent(this,MainActivity.class);
         startActivity(main);
+        finish();
     }
 }
