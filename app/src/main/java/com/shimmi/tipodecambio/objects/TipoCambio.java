@@ -70,7 +70,7 @@ public class TipoCambio extends BaseObservable {
     private void findTipoCambio() {
 
         Date now = Timestamp.now().toDate();
-        DateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         FirebaseDatabase.getInstance().getReference(banco+"/"+df.format(now)).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
@@ -141,8 +141,11 @@ public class TipoCambio extends BaseObservable {
         RequestQueue queue = Volley.newRequestQueue(context);
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
         String fecha = df.format(getFecha());
-        String urlCompra = "http://indicadoreseconomicos.bccr.fi.cr/indicadoreseconomicos/WebServices/wsIndicadoresEconomicos.asmx/ObtenerIndicadoresEconomicos?tcIndicador="+codigoCompra+"&tcFechaInicio="+fecha+"&tcFechaFinal="+fecha+"&tcNombre=string&tnSubNiveles=S";
-        String urlVenta = "http://indicadoreseconomicos.bccr.fi.cr/indicadoreseconomicos/WebServices/wsIndicadoresEconomicos.asmx/ObtenerIndicadoresEconomicos?tcIndicador="+codigoVenta+"&tcFechaInicio="+fecha+"&tcFechaFinal="+fecha+"&tcNombre=string&tnSubNiveles=S";
+        String token = "20MIV559IJ";
+        String getURL = "/Indicadores/Suscripciones/WS/wsindicadoreseconomicos.asmx/ObtenerIndicadoresEconomicos";
+        String host = "https://gee.bccr.fi.cr";
+        String urlCompra = host+getURL+"?Indicador="+codigoCompra+"&FechaInicio="+fecha+"&FechaFinal="+fecha+"&Nombre=string&SubNiveles=S&CorreoElectronico=jimmivco@gmail.com&Token="+token;
+        String urlVenta = host+getURL+"?Indicador="+codigoVenta+"&FechaInicio="+fecha+"&FechaFinal="+fecha+"&Nombre=string&SubNiveles=S&CorreoElectronico=jimmivco@gmail.com&Token="+token;
 
         queue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
 
@@ -263,6 +266,7 @@ public class TipoCambio extends BaseObservable {
         this.codigoCompra = codigoCompra;
     }
 
+    @Bindable
     public Date getFecha() {
         return fecha;
     }
