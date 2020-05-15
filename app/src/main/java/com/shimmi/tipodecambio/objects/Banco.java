@@ -1,30 +1,13 @@
 package com.shimmi.tipodecambio.objects;
 
 import android.content.Context;
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
-import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
 
-import com.android.databinding.library.baseAdapters.BR;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.Timestamp;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+
+import androidx.databinding.library.baseAdapters.BR;
 import com.shimmi.tipodecambio.R;
 import com.shimmi.tipodecambio.utils.Codigos;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 
 /**
  * Created by Jimmi on 23/08/2017.

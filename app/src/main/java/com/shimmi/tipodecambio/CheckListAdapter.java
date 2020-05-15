@@ -1,14 +1,13 @@
 package com.shimmi.tipodecambio;
 
 import android.content.Context;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.shimmi.tipodecambio.databinding.BankCheckitemBinding;
-import com.shimmi.tipodecambio.databinding.BankItemBinding;
 import com.shimmi.tipodecambio.objects.Banco;
 
 import java.util.ArrayList;
