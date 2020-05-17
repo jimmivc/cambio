@@ -63,18 +63,19 @@ public class TipoCambio extends BaseObservable {
     }
 
     private void findTipoCambio() {
-
         Date now = Timestamp.now().toDate();
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         FirebaseDatabase.getInstance().getReference(banco+"/"+df.format(now)).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue()!=null){
-                    setCompra(dataSnapshot.hasChild("compra")? dataSnapshot.child("compra").getValue(Double.class):0);
-                    setVenta(dataSnapshot.hasChild("venta")?dataSnapshot.child("venta").getValue(Double.class):0);
+                if (dataSnapshot.getValue() != null){
+                    setCompra(dataSnapshot.hasChild("compra") ? dataSnapshot.child("compra").getValue(Double.class) : 0);
+                    setVenta(dataSnapshot.hasChild("venta") ? dataSnapshot.child("venta").getValue(Double.class) : 0);
 //                    setTipoCambio(dataSnapshot.getValue(TipoCambio.class));
-                    if(getCompra()==0 || getVenta()==0)
-                        getDataFromApi(true);
+                    if ( getCompra() == 0 )
+                        getCompraFromAPI();
+                    if ( getVenta() == 0 )
+                        getVentaFromApi();
                 }else{
                     getDataFromApi(false);
                 }
@@ -89,18 +90,17 @@ public class TipoCambio extends BaseObservable {
 
     private void tryGetTipoCambio(boolean findCompra){
 
-        if (getCompra()==0 || getCompra()==0) {
-            Date now = Timestamp.now().toDate();
-//            findTipoCambio(now,getCompra()==0,getVenta()==0);
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(now);
-            calendar.add(Calendar.DATE,-1);
-            findTipoCambio(calendar.getTime(),findCompra,!findCompra);
-        }
+        Date now = Timestamp.now().toDate();
+//      findTipoCambio(now,getCompra()==0,getVenta()==0);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(now);
+        calendar.add(Calendar.DATE,-1);
+
+        findTipoCambio(calendar.getTime(),findCompra,!findCompra);
     }
 
     private void findTipoCambio(final Date date, final boolean fCompra, final boolean fVenta) {
-        DateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
         FirebaseDatabase.getInstance().getReference(banco+"/"+df.format(date)).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -122,7 +122,7 @@ public class TipoCambio extends BaseObservable {
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(date);
                     calendar.add(Calendar.DATE,-1);
-                    findTipoCambio(calendar.getTime(),fCompra,fVenta);
+                    findTipoCambio(calendar.getTime(), fCompra, fVenta);
                 }
             }
 
@@ -133,112 +133,18 @@ public class TipoCambio extends BaseObservable {
     }
 
     private void getDataFromApi(final boolean secondAttempt){
-        RequestQueue queue = Volley.newRequestQueue(context);
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-        String fecha = df.format(getFecha());
-        String token = "20MIV559IJ";
-        String getURL = "/Indicadores/Suscripciones/WS/wsindicadoreseconomicos.asmx/ObtenerIndicadoresEconomicos";
-        String host = "https://gee.bccr.fi.cr";
-        String urlCompra = host+getURL+"?Indicador="+codigoCompra+"&FechaInicio="+fecha+"&FechaFinal="+fecha+"&Nombre=string&SubNiveles=S&CorreoElectronico=jimmivco@gmail.com&Token="+token;
-        String urlVenta = host+getURL+"?Indicador="+codigoVenta+"&FechaInicio="+fecha+"&FechaFinal="+fecha+"&Nombre=string&SubNiveles=S&CorreoElectronico=jimmivco@gmail.com&Token="+token;
-
-        queue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
-
-            @Override
-            public void onRequestFinished(Request<Object> request) {
-                Log.d(banco+" compra: ",getCompra()+"");
-                Log.d(banco+" venta: ",getVenta()+"");
-            }
-        });
-
-        StringRequest stringRequestCompra = new StringRequest(Request.Method.GET, urlCompra,
-                new Response.Listener<String>(){
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-//                        mTextView.setText("Response is: "+ response.substring(0,500));
-//                        Log.d("Para que",response);
-
-                        try {
-                            SAXParserFactory spf = SAXParserFactory.newInstance();
-                            SAXParser sp = spf.newSAXParser();
-                            XMLReader xr = sp.getXMLReader();
-                            MyXMLHandler myXMLHandler = new MyXMLHandler(codigoVenta,codigoCompra);
-                            xr.setContentHandler(myXMLHandler);
-                            xr.parse(new InputSource(new StringReader(response)));
-                            setCompra(myXMLHandler.getTipoCambio().getCompra());
-
-                        } catch (Exception e) {
-                            Log.d("ERROR","XML Pasing Excpetion = " + e);
-                        }
-                        if(getCompra()==0)
-                            tryGetTipoCambio(true);
-                        else
-                            saveToDatabase();
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-//                mTextView.setText("That didn't work!");
-            }
-        });
-        // Add the request to the RequestQueue.
-        queue.add(stringRequestCompra);
-
-        StringRequest stringRequestVenta = new StringRequest(Request.Method.GET, urlVenta,
-                new Response.Listener<String>(){
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-//                        mTextView.setText("Response is: "+ response.substring(0,500));
-//                        Log.d("Para que",response);
-
-                        try {
-
-                            //handle XML
-                            SAXParserFactory spf = SAXParserFactory.newInstance();
-                            SAXParser sp = spf.newSAXParser();
-                            XMLReader xr = sp.getXMLReader();
-
-                            //URL to parse XML Tags
-//                            URL sourceUrl = new URL(
-//                                    "http://indicadoreseconomicos.bccr.fi.cr/indicadoreseconomicos/WebServices/wsIndicadoresEconomicos.asmx/ObtenerIndicadoresEconomicos?tcIndicador=3151&tcFechaInicio=11/10/2017&tcFechaFinal=11/10/2017&tcNombre=string&tnSubNiveles=S");
-                            //Create handler to handle XML Tags ( extends DefaultHandler )
-                            MyXMLHandler myXMLHandler = new MyXMLHandler(codigoVenta,codigoCompra);
-                            /////dddd
-                            //////dddd
-                            xr.setContentHandler(myXMLHandler);
-                            xr.parse(new InputSource(new StringReader(response)));
-                            setVenta(myXMLHandler.getTipoCambio().getVenta());
-//                            Log.d("MAMAMIA",myXMLHandler.getBanco().getTipoCambio().getVenta()+"");
-                        } catch (Exception e) {
-                            Log.d("ERROR","XML Pasing Excpetion = " + e);
-                        }
-
-                        if(getVenta()==0)
-                            tryGetTipoCambio(false);
-                        else
-                            saveToDatabase();                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-//                mTextView.setText("That didn't work!");
-            }
-        });
-        // Add the request to the RequestQueue.
-        queue.add(stringRequestVenta);
-
+       getCompraFromAPI();
+       getVentaFromApi();
     }
 
     private void saveToDatabase(){
-        if(getVenta()!=0 || getCompra()!=0 ){
-            DateFormat df = new SimpleDateFormat("dd-MM-yyyy",Locale.US);
+        if( getVenta()!=0 || getCompra()!=0 ){
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd",Locale.US);
             Map<String, Object> data = new HashMap<>();
-            if(getVenta()!=0)
-                data.put("compra", getVenta());
+            if (getVenta()!=0)
+                data.put("venta", getVenta());
             if (getCompra()!=0)
-                data.put("venta", getCompra());
+                data.put("compra", getCompra());
 
 //          FirebaseFirestore.getInstance().collection(banco).document(df.format(now)).set(docData);
             FirebaseDatabase.getInstance().getReference(banco+"/"+df.format(getFecha())).setValue(data);
@@ -289,6 +195,121 @@ public class TipoCambio extends BaseObservable {
         this.compra = compra;
         notifyPropertyChanged(BR.compra);
 
+    }
+
+    private void getCompraFromAPI(){
+        RequestQueue queue = Volley.newRequestQueue(context);
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        String fecha = df.format(getFecha());
+        String token = "20MIV559IJ";
+        String getURL = "/Indicadores/Suscripciones/WS/wsindicadoreseconomicos.asmx/ObtenerIndicadoresEconomicos";
+        String host = "https://gee.bccr.fi.cr";
+        String urlCompra = host+getURL+"?Indicador="+codigoCompra+"&FechaInicio="+fecha+"&FechaFinal="+fecha+"&Nombre=string&SubNiveles=S&CorreoElectronico=jimmivco@gmail.com&Token="+token;
+
+        queue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+
+            @Override
+            public void onRequestFinished(Request<Object> request) {
+                Log.d(banco+" compra: ",getCompra()+"");
+            }
+        });
+
+        StringRequest stringRequestCompra = new StringRequest(Request.Method.GET, urlCompra,
+                new Response.Listener<String>(){
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+//                        mTextView.setText("Response is: "+ response.substring(0,500));
+//                        Log.d("Para que",response);
+
+                        try {
+                            SAXParserFactory spf = SAXParserFactory.newInstance();
+                            SAXParser sp = spf.newSAXParser();
+                            XMLReader xr = sp.getXMLReader();
+                            MyXMLHandler myXMLHandler = new MyXMLHandler(codigoVenta,codigoCompra);
+                            xr.setContentHandler(myXMLHandler);
+                            xr.parse(new InputSource(new StringReader(response)));
+                            setCompra(myXMLHandler.getTipoCambio().getCompra());
+
+                        } catch (Exception e) {
+                            Log.d("ERROR","XML Pasing Excpetion = " + e);
+                        }
+                        if(getCompra()==0)
+                            tryGetTipoCambio(true);
+                        else
+                            saveToDatabase();
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                mTextView.setText("That didn't work!");
+            }
+        });
+        // Add the request to the RequestQueue.
+        queue.add(stringRequestCompra);
+    }
+
+    private void getVentaFromApi(){
+        RequestQueue queue = Volley.newRequestQueue(context);
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        String fecha = df.format(getFecha());
+        String token = "20MIV559IJ";
+        String getURL = "/Indicadores/Suscripciones/WS/wsindicadoreseconomicos.asmx/ObtenerIndicadoresEconomicos";
+        String host = "https://gee.bccr.fi.cr";
+        String urlVenta = host+getURL+"?Indicador="+codigoVenta+"&FechaInicio="+fecha+"&FechaFinal="+fecha+"&Nombre=string&SubNiveles=S&CorreoElectronico=jimmivco@gmail.com&Token="+token;
+
+        queue.addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+
+            @Override
+            public void onRequestFinished(Request<Object> request) {
+                Log.d(banco+" compra: ",getCompra()+"");
+                Log.d(banco+" venta: ",getVenta()+"");
+            }
+        });
+
+        StringRequest stringRequestVenta = new StringRequest(Request.Method.GET, urlVenta,
+                new Response.Listener<String>(){
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+//                        mTextView.setText("Response is: "+ response.substring(0,500));
+//                        Log.d("Para que",response);
+
+                        try {
+
+                            //handle XML
+                            SAXParserFactory spf = SAXParserFactory.newInstance();
+                            SAXParser sp = spf.newSAXParser();
+                            XMLReader xr = sp.getXMLReader();
+
+                            //URL to parse XML Tags
+//                            URL sourceUrl = new URL(
+//                                    "http://indicadoreseconomicos.bccr.fi.cr/indicadoreseconomicos/WebServices/wsIndicadoresEconomicos.asmx/ObtenerIndicadoresEconomicos?tcIndicador=3151&tcFechaInicio=11/10/2017&tcFechaFinal=11/10/2017&tcNombre=string&tnSubNiveles=S");
+                            //Create handler to handle XML Tags ( extends DefaultHandler )
+                            MyXMLHandler myXMLHandler = new MyXMLHandler(codigoVenta,codigoCompra);
+                            /////dddd
+                            //////dddd
+                            xr.setContentHandler(myXMLHandler);
+                            xr.parse(new InputSource(new StringReader(response)));
+                            setVenta(myXMLHandler.getTipoCambio().getVenta());
+//                            Log.d("MAMAMIA",myXMLHandler.getBanco().getTipoCambio().getVenta()+"");
+                        } catch (Exception e) {
+                            Log.d("ERROR","XML Pasing Excpetion = " + e);
+                        }
+
+                        if(getVenta()==0)
+                            tryGetTipoCambio(false);
+                        else
+                            saveToDatabase();                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                mTextView.setText("That didn't work!");
+            }
+        });
+        // Add the request to the RequestQueue.
+        queue.add(stringRequestVenta);
     }
 
 }
