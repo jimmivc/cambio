@@ -40,9 +40,14 @@ import javax.xml.parsers.SAXParserFactory;
  */
 
 public class TipoCambio extends BaseObservable {
+
+    private final DateFormat localDateFormat = new SimpleDateFormat("dd-MM-yy", Locale.US);
+
     private String codigoVenta;
     private String codigoCompra;
     private Date fecha;
+    private String fechaVenta;
+    private String fechaCompra;
     private double venta;
     private double compra;
     private String banco;
@@ -70,7 +75,9 @@ public class TipoCambio extends BaseObservable {
             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() != null){
                     setCompra(dataSnapshot.hasChild("compra") ? dataSnapshot.child("compra").getValue(Double.class) : 0);
+                    setFechaCompra(getFecha());
                     setVenta(dataSnapshot.hasChild("venta") ? dataSnapshot.child("venta").getValue(Double.class) : 0);
+                    setFechaVenta(getFecha());
 //                    setTipoCambio(dataSnapshot.getValue(TipoCambio.class));
                     if ( getCompra() == 0 )
                         getCompraFromAPI();
@@ -112,9 +119,11 @@ public class TipoCambio extends BaseObservable {
 //                    setTipoCambio(dataSnapshot.getValue(TipoCambio.class));
                     if (fCompra){
                         setCompra(compra);
+                        setFechaCompra(date);
                     }
                     if(fVenta){
                         setVenta(venta);
+                        setFechaVenta(date);
                     }
                 }
 
@@ -167,13 +176,42 @@ public class TipoCambio extends BaseObservable {
         this.codigoCompra = codigoCompra;
     }
 
-    @Bindable
-    public Date getFecha() {
+    private Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    private void setFecha(Date fecha) {
         this.fecha = fecha;
+    }
+
+    public void setFechaVenta(Date fechaVenta){
+        this.fechaVenta = localDateFormat.format(fechaVenta);
+        notifyPropertyChanged(BR.fechaVenta);
+    }
+
+    public void setFechaVenta(String fechaVenta){
+        this.fechaVenta = fechaVenta;
+        notifyPropertyChanged(BR.fechaVenta);
+    }
+
+    @Bindable
+    public String getFechaVenta(){
+        return fechaVenta;
+    }
+
+    public void setFechaCompra(String fechaCompra){
+        this.fechaCompra = fechaCompra;
+        notifyPropertyChanged(BR.fechaCompra);
+    }
+
+    public void setFechaCompra(Date fechaCompra){
+        this.fechaCompra = localDateFormat.format(fechaCompra);
+        notifyPropertyChanged(BR.fechaCompra);
+    }
+
+    @Bindable
+    public String getFechaCompra(){
+        return fechaCompra;
     }
 
     @Bindable
@@ -200,7 +238,7 @@ public class TipoCambio extends BaseObservable {
     private void getCompraFromAPI(){
         RequestQueue queue = Volley.newRequestQueue(context);
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-        String fecha = df.format(getFecha());
+        final String fecha = df.format(getFecha());
         String token = "20MIV559IJ";
         String getURL = "/Indicadores/Suscripciones/WS/wsindicadoreseconomicos.asmx/ObtenerIndicadoresEconomicos";
         String host = "https://gee.bccr.fi.cr";
@@ -230,7 +268,7 @@ public class TipoCambio extends BaseObservable {
                             xr.setContentHandler(myXMLHandler);
                             xr.parse(new InputSource(new StringReader(response)));
                             setCompra(myXMLHandler.getTipoCambio().getCompra());
-
+                            setFechaCompra(getFecha());
                         } catch (Exception e) {
                             Log.d("ERROR","XML Pasing Excpetion = " + e);
                         }
@@ -293,6 +331,7 @@ public class TipoCambio extends BaseObservable {
                             xr.setContentHandler(myXMLHandler);
                             xr.parse(new InputSource(new StringReader(response)));
                             setVenta(myXMLHandler.getTipoCambio().getVenta());
+                            setFechaVenta(getFecha());
 //                            Log.d("MAMAMIA",myXMLHandler.getBanco().getTipoCambio().getVenta()+"");
                         } catch (Exception e) {
                             Log.d("ERROR","XML Pasing Excpetion = " + e);
