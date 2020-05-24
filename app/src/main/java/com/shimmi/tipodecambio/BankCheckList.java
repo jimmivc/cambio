@@ -4,9 +4,13 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -15,13 +19,18 @@ import com.shimmi.tipodecambio.objects.Banco;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-public class BankCheckList extends Activity {
+public class BankCheckList extends AppCompatActivity {
     ArrayList<Banco> bancos;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bank_checklist);
-
+        Toolbar toolbar = (Toolbar) findViewById(R.id.child_toolbar);
+        setSupportActionBar(toolbar);
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Bancos Preferidos");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 //        if(getArrayList("banks")){
 
 //        }
@@ -100,5 +109,36 @@ public class BankCheckList extends Activity {
         String json = prefs.getString(key,"[]");
         Type type = new TypeToken<ArrayList<String>>() {}.getType();
         return gson.fromJson(json, type);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_empty, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+
+        if (id == R.id.action_add){
+            return true;
+        }
+
+        if(id == android.R.id.home){
+            onBackPressed();
+        }
+
+
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -25,7 +25,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".BankCheckList" />
+        <activity
+            android:name=".BankCheckList"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.Parent_ACTIVITY"
+                android:value=".BankCheckList"/>
+        </activity>
     </application>
 
 </manifest>
